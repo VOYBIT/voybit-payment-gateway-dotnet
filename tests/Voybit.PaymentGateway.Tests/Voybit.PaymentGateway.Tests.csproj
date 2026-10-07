@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Voybit.PaymentGateway.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Voybit.PaymentGateway/Voybit.PaymentGateway.csproj" />
+  </ItemGroup>
+</Project>

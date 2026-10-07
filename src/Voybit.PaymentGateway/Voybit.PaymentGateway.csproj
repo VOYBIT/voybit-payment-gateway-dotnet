@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Voybit.PaymentGateway</RootNamespace>
+    <AssemblyName>Voybit.PaymentGateway</AssemblyName>
+    <Version>0.1.0</Version>
+    <Description>Create a Voybit payment and verify its webhook.</Description>
+    <Authors>Voybit</Authors>
+    <PackageId>Voybit.PaymentGateway</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/VOYBIT/voybit-payment-gateway-dotnet</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>
