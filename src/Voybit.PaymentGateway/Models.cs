@@ -30,6 +30,77 @@ public sealed class CreatePaymentRequest
     public Dictionary<string, object?>? Metadata { get; set; }
 }
 
+public sealed class CreateCheckoutSessionRequest
+{
+    [JsonPropertyName("fiat_amount")]
+    public string FiatAmount { get; set; } = "";
+
+    [JsonPropertyName("fiat_currency")]
+    public string FiatCurrency { get; set; } = "";
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, object?>? Metadata { get; set; }
+
+    [JsonPropertyName("payment_window_seconds")]
+    public long? PaymentWindowSeconds { get; set; }
+}
+
+public sealed class CheckoutSession
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = "";
+
+    [JsonPropertyName("session_id")]
+    public string SessionId { get; set; } = "";
+
+    [JsonPropertyName("public_id")]
+    public string PublicId { get; set; } = "";
+
+    [JsonPropertyName("status")]
+    public string Status { get; set; } = "";
+
+    [JsonPropertyName("checkout_url")]
+    public string CheckoutUrl { get; set; } = "";
+
+    [JsonPropertyName("fiat_amount")]
+    public string FiatAmount { get; set; } = "";
+
+    [JsonPropertyName("fiat_currency")]
+    public string FiatCurrency { get; set; } = "";
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, object?>? Metadata { get; set; }
+
+    [JsonPropertyName("payment_window_seconds")]
+    public long PaymentWindowSeconds { get; set; }
+
+    [JsonPropertyName("expires_at")]
+    public DateTimeOffset? ExpiresAt { get; set; }
+
+    [JsonPropertyName("created_at")]
+    public DateTimeOffset? CreatedAt { get; set; }
+}
+
+public sealed class CreatedCheckoutSession
+{
+    public CreatedCheckoutSession(CheckoutSession checkoutSession, bool replayed, string requestId)
+    {
+        CheckoutSession = checkoutSession;
+        Replayed = replayed;
+        RequestId = requestId;
+    }
+
+    public CheckoutSession CheckoutSession { get; }
+    public bool Replayed { get; }
+    public string RequestId { get; }
+}
+
 public sealed class Payment
 {
     [JsonPropertyName("id")]

@@ -32,6 +32,29 @@ using (var client = new Client("vb_test_example_secret", "http://127.0.0.1", han
 
 handler = new RecordingHandler
 {
+    Status = HttpStatusCode.Created,
+    Body = """{"session_id":"7155d76a-9f81-40eb-9233-878aac50eb20","public_id":"nYVvXxsYGr5LZk8Dn7hU0Q","status":"open","checkout_url":"https://voybit.com/pay/nYVvXxsYGr5LZk8Dn7hU0Q","fiat_amount":"25","fiat_currency":"USD"}"""
+};
+using (var client = new Client("vb_test_example_secret", "http://127.0.0.1", handler))
+{
+    var created = await client.CreateCheckoutSessionAsync(new CreateCheckoutSessionRequest
+    {
+        FiatAmount = "25.00",
+        FiatCurrency = "USD",
+        Description = "Order 1001",
+        Metadata = new Dictionary<string, object?> { ["order_id"] = "1001" },
+        PaymentWindowSeconds = 1800
+    }, "order:1001:attempt:1");
+    Check(handler.Path == "/gateway/checkout-sessions", "checkout session path");
+    Check(created.CheckoutSession.Status == "open", "checkout session status");
+    Check(created.CheckoutSession.SessionId == "7155d76a-9f81-40eb-9233-878aac50eb20", "checkout session id");
+    using var sent = JsonDocument.Parse(handler.RequestBody ?? "{}");
+    Check(!sent.RootElement.TryGetProperty("asset_id", out _), "buyer chooses asset");
+    Check(sent.RootElement.GetProperty("fiat_amount").GetString() == "25.00", "fiat amount");
+}
+
+handler = new RecordingHandler
+{
     Status = HttpStatusCode.UnprocessableEntity,
     Body = """{"error":{"code":"asset_unavailable","message":"That asset is not enabled for this gateway."}}"""
 };
@@ -78,6 +101,7 @@ sealed class RecordingHandler : HttpMessageHandler
     public string? RequestBody { get; private set; }
     public string? ApiKey { get; private set; }
     public string? Idempotency { get; private set; }
+    public string? Path { get; private set; }
     public HttpStatusCode Status { get; init; }
     public string Body { get; init; } = "{}";
 
@@ -87,6 +111,7 @@ sealed class RecordingHandler : HttpMessageHandler
         RequestBody = request.Content is null ? "" : await request.Content.ReadAsStringAsync(cancellationToken);
         ApiKey = request.Headers.TryGetValues("X-Voybit-Api-Key", out var key) ? key.FirstOrDefault() : "";
         Idempotency = request.Headers.TryGetValues("Idempotency-Key", out var idempotency) ? idempotency.FirstOrDefault() : "";
+        Path = request.RequestUri?.AbsolutePath;
         var response = new HttpResponseMessage(Status)
         {
             Content = new StringContent(Body, Encoding.UTF8, "application/json")

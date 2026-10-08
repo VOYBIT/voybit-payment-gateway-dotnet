@@ -2,8 +2,8 @@
   <PropertyGroup>
     <RootNamespace>Voybit.PaymentGateway</RootNamespace>
     <AssemblyName>Voybit.PaymentGateway</AssemblyName>
-    <Version>0.1.0</Version>
-    <Description>Create a Voybit payment and verify its webhook.</Description>
+    <Version>0.2.0</Version>
+    <Description>Create buyer-choice Voybit checkout sessions and verify webhooks.</Description>
     <Authors>Voybit</Authors>
     <PackageId>Voybit.PaymentGateway</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
